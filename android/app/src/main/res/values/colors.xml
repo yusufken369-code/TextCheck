@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_navy">#0F2744</color>
+    <color name="dark_navy">#122B49</color>
+    <color name="primary_blue">#1976F3</color>
+    <color name="light_blue">#EAF3FF</color>
+    <color name="key_bg">#1E3653</color>
+    <color name="warning_bg">#FFFFFF</color>
+    <color name="warning_border">#FECDCA</color>
+    <color name="warning_red">#D93025</color>
+</resources>

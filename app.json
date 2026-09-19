@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Huquqiy Keyboard",
+    "slug": "huquqiy-keyboard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "android": {
+      "package": "com.huquqiykeyboard"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "plugins": [
+      "expo-status-bar"
+    ]
+  }
+}

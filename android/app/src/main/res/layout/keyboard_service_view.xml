@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:backgroundColor="#122B49"
+    android:paddingBottom="8dp">
+
+    <!-- Legal Warning Card Header Container -->
+    <LinearLayout
+        android:id="@+id/warningCardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFF5F5"
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="!"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:background="#DC2626" />
+
+            <TextView
+                android:id="@+id/warningTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Huquqiy ogohlantirish (Qizil Ogohlantirish)"
+                android:textColor="#DC2626"
+                android:textSize="14.5sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:id="@+id/closeWarningBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✕"
+                android:textColor="#991B1B"
+                android:textSize="14sp"
+                android:padding="4dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/warningDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ushbu matn haqoratga oid huquqiy normalarga aloqador bo‘lishi mumkin."
+            android:textColor="#B91C1C"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:layout_marginTop="6dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tegishli modda: "
+                android:textColor="#7F1D1D"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/warningDocTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ma’muriy javobgarlik to‘g‘risidagi kodeks (Modda 183)"
+                android:textColor="#DC2626"
+                android:textSize="12.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/warningDetailsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Batafsil ›"
+                android:textColor="#DC2626"
+                android:textSize="12.5sp"
+                android:textStyle="bold"
+                android:paddingLeft="6dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Top Toolbar of System Keyboard -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/langOz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="● O‘z"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:background="#1E3653"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:layout_marginRight="6dp" />
+
+        <TextView
+            android:id="@+id/langUz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ўз"
+            android:textColor="#94A3B8"
+            android:textSize="13sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:layout_marginRight="6dp" />
+
+        <TextView
+            android:id="@+id/langRu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Рус"
+            android:textColor="#94A3B8"
+            android:textSize="13sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp" />
+    </LinearLayout>
+
+    <!-- Keyboard Rows Container -->
+    <LinearLayout
+        android:id="@+id/keyboardKeysLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="4dp" />
+
+</LinearLayout>
