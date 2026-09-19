@@ -1,6 +1,10 @@
 node_modules/
 .expo/
 dist/
+.gradle/
+android/.gradle/
+android/app/build/
+android/build/
 npm-debug.*
 *.apk
 *.aab
