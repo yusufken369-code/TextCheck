@@ -22,7 +22,7 @@ export default function ArticleDetailsScreen({ articleId = 'mjt-183', onGoBack }
         <TouchableOpacity
           onPress={onGoBack}
           style={styles.backBtn}
-          activeOpacity={0.7}
+          activeOpacity={0.7} x
           hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}
         >
           <BackArrowIcon size={20} color="#FFFFFF" />

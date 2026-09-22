@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { GlobeIcon, SettingsNavIcon, QonunNavIcon } from '../components/Icons';
 
 export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, onEnter, onLanguageChange }) {
-  const [activeLang, setActiveLang] = useState('O\'z');
+  const [activeLang, setActiveLang] = useState('Ўз');
   const [isShiftActive, setIsShiftActive] = useState(false);
   const [isSymbolMode, setIsSymbolMode] = useState(false);
 
@@ -33,19 +33,11 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
         {/* Language selector buttons */}
         <View style={styles.langContainer}>
           <TouchableOpacity
-            style={[styles.langBadge, activeLang === 'O\'z' && styles.langBadgeActive]}
-            onPress={() => handleLangSelect('O\'z')}
-            activeOpacity={0.7}
-          >
-            <View style={styles.flagDot} />
-            <Text style={[styles.langText, activeLang === 'O\'z' && styles.langTextActive]}>O‘z</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
             style={[styles.langBadge, activeLang === 'Ўз' && styles.langBadgeActive]}
             onPress={() => handleLangSelect('Ўз')}
             activeOpacity={0.7}
           >
+            <View style={styles.flagDot} />
             <Text style={[styles.langText, activeLang === 'Ўз' && styles.langTextActive]}>Ўз</Text>
           </TouchableOpacity>
 
@@ -121,7 +113,7 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
             <Text style={styles.specialKeyText}>{isSymbolMode ? 'ABC' : '?123'}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.key, styles.specialKey, { flex: 1 }]} onPress={() => handleLangSelect(activeLang === 'O\'z' ? 'Рус' : 'O\'z')} activeOpacity={0.65}>
+          <TouchableOpacity style={[styles.key, styles.specialKey, { flex: 1 }]} onPress={() => handleLangSelect(activeLang === 'Ўз' ? 'Рус' : 'Ўз')} activeOpacity={0.65}>
             <GlobeIcon size={16} color="#CBD5E1" />
           </TouchableOpacity>
 

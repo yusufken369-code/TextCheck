@@ -46,7 +46,7 @@ export default function LegalWarningCard({
         </View>
       ) : null}
 
-      {/* Bottom section: Document reference ("QAYSI MODDA") & Batafsil action */}
+      {/* Bottom section: Document reference ("QAYSI MODDA") */}
       <View style={styles.bottomRow}>
         <View style={styles.docGroup}>
           <DocumentIcon size={18} color="#DC2626" bg="#FEE2E2" />
@@ -55,11 +55,6 @@ export default function LegalWarningCard({
             <Text style={styles.docName} numberOfLines={2}>{documentTitle}</Text>
           </View>
         </View>
-
-        <TouchableOpacity style={styles.detailsBtn} onPress={onPressDetails} activeOpacity={0.75}>
-          <Text style={styles.detailsBtnText}>{t('viewArticleBtn')}</Text>
-          <ChevronRightIcon size={14} color="#991B1B" />
-        </TouchableOpacity>
       </View>
     </View>
   );

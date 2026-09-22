@@ -36,20 +36,43 @@ public class LegalAnalysisEngine {
                 .replaceAll("\\s+", " ")
                 .trim();
 
+        // Check Insult (Uzbek Latin/Cyrillic, Russian, English)
         boolean isInsult = normalized.contains("haqorat") ||
+                normalized.contains("хакорат") ||
+                normalized.contains("хақорат") ||
                 normalized.contains("so'kish") ||
+                normalized.contains("сокиш") ||
                 normalized.contains("tahqir") ||
-                normalized.contains("haqorat qilaman") ||
-                normalized.contains("haqoratomuz");
+                normalized.contains("оскорбление") ||
+                normalized.contains("оскорблю") ||
+                normalized.contains("insult");
 
+        // Check Defamation
         boolean isDefamation = normalized.contains("tuhmat") ||
+                normalized.contains("тухмат") ||
+                normalized.contains("туҳмат") ||
                 normalized.contains("sharmanda") ||
-                normalized.contains("uydirma") ||
-                normalized.contains("bo'hton");
+                normalized.contains("клевета") ||
+                normalized.contains("клевет") ||
+                normalized.contains("defamation");
 
-        boolean isInternetCrime = normalized.contains("internet") && (isInsult || isDefamation || normalized.contains("tarqat") || normalized.contains("taqiqlangan"));
+        // Check Bribe
+        boolean isBribe = normalized.contains("poro") ||
+                normalized.contains("pora") ||
+                normalized.contains("пора") ||
+                normalized.contains("взятка") ||
+                normalized.contains("взятку") ||
+                normalized.contains("bribe");
 
-        if (isInsult || isInternetCrime) {
+        // Check Theft
+        boolean isTheft = normalized.contains("o'g'ri") ||
+                normalized.contains("o'g'irlik") ||
+                normalized.contains("ўғрилик") ||
+                normalized.contains("кража") ||
+                normalized.contains("украсть") ||
+                normalized.contains("theft");
+
+        if (isInsult) {
             return new LegalMatchResult(
                     true,
                     "Huquqiy ogohlantirish",
@@ -73,7 +96,7 @@ public class LegalAnalysisEngine {
             );
         }
 
-        if (normalized.contains("poro") || normalized.contains("pora")) {
+        if (isBribe) {
             return new LegalMatchResult(
                     true,
                     "Huquqiy ogohlantirish",
@@ -85,7 +108,7 @@ public class LegalAnalysisEngine {
             );
         }
 
-        if (normalized.contains("o'g'ri") || normalized.contains("o'g'irlik")) {
+        if (isTheft) {
             return new LegalMatchResult(
                     true,
                     "Huquqiy ogohlantirish",
