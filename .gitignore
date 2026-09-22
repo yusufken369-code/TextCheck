@@ -9,3 +9,5 @@ npm-debug.*
 *.apk
 *.aab
 *.eas-build-local*
+.env
+.env.local
