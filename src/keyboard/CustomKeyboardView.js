@@ -1,20 +1,57 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { GlobeIcon, SettingsNavIcon, QonunNavIcon } from '../components/Icons';
 
 export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, onEnter, onLanguageChange }) {
   const [activeLang, setActiveLang] = useState('Ўз');
-  const [isShiftActive, setIsShiftActive] = useState(false);
+  const [shiftState, setShiftState] = useState(1); // 0 = OFF, 1 = SHIFT_ONCE, 2 = CAPS_LOCK
+  const [lastShiftClick, setLastShiftClick] = useState(0);
   const [isSymbolMode, setIsSymbolMode] = useState(false);
 
-  const row1Letters = isShiftActive ? ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'] : ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
-  const row2Letters = isShiftActive ? ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'] : ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
-  const row3Letters = isShiftActive ? ['Z', 'X', 'C', 'V', 'B', 'N', 'M'] : ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
-  
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const isUppercase = shiftState > 0;
+
+  const row1Letters = isUppercase ? ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'] : ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
+  const row2Letters = isUppercase ? ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'] : ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
+  const row3Letters = isUppercase ? ['Z', 'X', 'C', 'V', 'B', 'N', 'M'] : ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
+
   const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
   const symbolsRow1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
   const symbolsRow2 = ['@', '#', '$', '%', '&', '-', '+', '(', ')', '/'];
   const symbolsRow3 = ['*', '"', '\'', ':', ';', '!', '?'];
+
+  const triggerAnimation = () => {
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 0.95,
+        duration: 60,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 90,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const toggleShift = () => {
+    const now = Date.now();
+    let nextState = 0;
+
+    if (shiftState === 2) {
+      nextState = 0;
+    } else if (now - lastShiftClick < 450 && now - lastShiftClick > 0) {
+      nextState = 2; // Caps lock (Double Tap)
+    } else {
+      nextState = shiftState === 0 ? 1 : 0;
+    }
+
+    setLastShiftClick(now);
+    setShiftState(nextState);
+    triggerAnimation();
+  };
 
   const handleLangSelect = (lang) => {
     setActiveLang(lang);
@@ -23,7 +60,10 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
 
   const handleCharPress = (char) => {
     onKeyPress(char);
-    if (isShiftActive) setIsShiftActive(false);
+    if (shiftState === 1) {
+      setShiftState(0);
+      triggerAnimation();
+    }
   };
 
   return (
@@ -62,7 +102,7 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
       </View>
 
       {/* Keys Rows */}
-      <View style={styles.keysSection}>
+      <Animated.View style={[styles.keysSection, { transform: [{ scaleY: scaleAnim }] }]}>
         {/* Row 1 */}
         <View style={styles.row}>
           {(!isSymbolMode ? row1Letters : symbolsRow1).map((keyChar, idx) => (
@@ -85,11 +125,18 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
         {/* Row 3: Shift - Letters/Symbols - Backspace */}
         <View style={styles.row}>
           <TouchableOpacity
-            style={[styles.key, styles.specialKey, isShiftActive && styles.specialKeyActive]}
-            onPress={() => setIsShiftActive(!isShiftActive)}
+            style={[
+              styles.key,
+              styles.specialKey,
+              shiftState === 1 && styles.specialKeyActive,
+              shiftState === 2 && styles.capsLockActive,
+            ]}
+            onPress={toggleShift}
             activeOpacity={0.65}
           >
-            <Text style={[styles.specialKeyText, isShiftActive && { color: '#FFFFFF' }]}>⇧</Text>
+            <Text style={[styles.specialKeyText, shiftState > 0 && { color: shiftState === 2 ? '#67E8F9' : '#FFFFFF' }]}>
+              {shiftState === 2 ? '⇫' : '⇧'}
+            </Text>
           </TouchableOpacity>
 
           {(!isSymbolMode ? row3Letters : symbolsRow3).map((keyChar, idx) => (
@@ -129,7 +176,7 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
             <Text style={styles.enterKeyText}>↵</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 }
@@ -229,6 +276,10 @@ const styles = StyleSheet.create({
   specialKeyActive: {
     backgroundColor: '#2563EB',
     borderColor: '#3B82F6'
+  },
+  capsLockActive: {
+    backgroundColor: '#1D4ED8',
+    borderColor: '#67E8F9'
   },
   specialKeyText: {
     color: '#94A3B8',

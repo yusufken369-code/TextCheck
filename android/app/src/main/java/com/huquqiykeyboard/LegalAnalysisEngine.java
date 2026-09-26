@@ -10,8 +10,9 @@ public class LegalAnalysisEngine {
         public String documentTitle;
         public String articleNumber;
         public String lexUrl;
+        public String penaltyText;
 
-        public LegalMatchResult(boolean hasMatch, String warningTitle, String warningText, String highlightedWord, String documentTitle, String articleNumber, String lexUrl) {
+        public LegalMatchResult(boolean hasMatch, String warningTitle, String warningText, String highlightedWord, String documentTitle, String articleNumber, String lexUrl, String penaltyText) {
             this.hasMatch = hasMatch;
             this.warningTitle = warningTitle;
             this.warningText = warningText;
@@ -19,10 +20,11 @@ public class LegalAnalysisEngine {
             this.documentTitle = documentTitle;
             this.articleNumber = articleNumber;
             this.lexUrl = lexUrl;
+            this.penaltyText = penaltyText;
         }
 
         public static LegalMatchResult noMatch() {
-            return new LegalMatchResult(false, null, "Aniq huquqiy norma aniqlanmadi.", null, null, null, null);
+            return new LegalMatchResult(false, null, "Aniq huquqiy norma aniqlanmadi.", null, null, null, null, null);
         }
     }
 
@@ -80,7 +82,8 @@ public class LegalAnalysisEngine {
                     "haqoratga",
                     "Ma’muriy javobgarlik to‘g‘risidagi kodeks",
                     "Modda 183",
-                    "https://lex.uz/docs/97664#183"
+                    "https://lex.uz/docs/97664#183",
+                    "Oqibat: BHM 2-5 baravarigacha jarima yoki 15 sutka qamoq"
             );
         }
 
@@ -92,7 +95,8 @@ public class LegalAnalysisEngine {
                     "tuhmatga",
                     "Ma’muriy javobgarlik to‘g‘risidagi kodeks",
                     "Modda 40",
-                    "https://lex.uz/docs/97664#40"
+                    "https://lex.uz/docs/97664#40",
+                    "Oqibat: BHM 20-60 baravarigacha jarima"
             );
         }
 
@@ -104,7 +108,8 @@ public class LegalAnalysisEngine {
                     "poraxorlikka",
                     "Jinoyat kodeksi",
                     "Modda 210",
-                    "https://lex.uz/docs/111453#210"
+                    "https://lex.uz/docs/111453#210",
+                    "Oqibat: 5 yildan 10 yilgacha ozodlikdan mahrum qilish"
             );
         }
 
@@ -116,7 +121,8 @@ public class LegalAnalysisEngine {
                     "o'g'rilikka",
                     "Jinoyat kodeksi",
                     "Modda 169",
-                    "https://lex.uz/docs/111453#169"
+                    "https://lex.uz/docs/111453#169",
+                    "Oqibat: BHM 50 baravarigacha jarima yoki 3 yilgacha ozodlikdan mahrum qilish"
             );
         }
 

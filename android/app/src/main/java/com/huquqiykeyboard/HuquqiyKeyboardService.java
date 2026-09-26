@@ -24,6 +24,7 @@ public class HuquqiyKeyboardService extends InputMethodService {
     private TextView warningTitle;
     private TextView warningDescription;
     private TextView warningDocTitle;
+    private TextView warningPenalty;
     private View closeWarningBtn;
 
     private TextView langUz;
@@ -40,9 +41,10 @@ public class HuquqiyKeyboardService extends InputMethodService {
     private String currentLexUrl = "https://lex.uz";
 
     // Keyboard state
-    private String currentLanguage = "oz_cyr"; // "oz_cyr", "ru_cyr", "eng"
+    private String currentLanguage = "oz_cyr"; // "oz_cyr", "oz_lat", "ru_cyr", "eng"
     private boolean isLegalCheckEnabled = true;
-    private boolean isShifted = false;
+    private int shiftState = 0; // 0 = OFF (lowercase), 1 = SHIFT_ONCE (1 capital letter), 2 = CAPS_LOCK (all capital letters)
+    private long lastShiftClickTime = 0;
     private boolean isSymbols = false;
 
     @Override
@@ -53,6 +55,7 @@ public class HuquqiyKeyboardService extends InputMethodService {
         warningTitle = layout.findViewById(R.id.warningTitle);
         warningDescription = layout.findViewById(R.id.warningDescription);
         warningDocTitle = layout.findViewById(R.id.warningDocTitle);
+        warningPenalty = layout.findViewById(R.id.warningPenalty);
         closeWarningBtn = layout.findViewById(R.id.closeWarningBtn);
 
         langUz = layout.findViewById(R.id.langUz);
@@ -66,7 +69,22 @@ public class HuquqiyKeyboardService extends InputMethodService {
         closeWarningBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                warningCardContainer.setVisibility(View.GONE);
+                hideWarningWithAnimation();
+            }
+        });
+
+        warningDocTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentLexUrl != null && !currentLexUrl.isEmpty()) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentLexUrl));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -81,7 +99,11 @@ public class HuquqiyKeyboardService extends InputMethodService {
         langUz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentLanguage = "oz_cyr";
+                if ("oz_cyr".equals(currentLanguage)) {
+                    currentLanguage = "oz_lat";
+                } else {
+                    currentLanguage = "oz_cyr";
+                }
                 isSymbols = false;
                 updateToolbarState();
                 buildKeyboardKeys();
@@ -144,8 +166,12 @@ public class HuquqiyKeyboardService extends InputMethodService {
         langEng.setBackgroundColor(0x00000000);
 
         // Highlight selected tab
-        if ("oz_cyr".equals(currentLanguage) || "oz_lat".equals(currentLanguage)) {
+        if ("oz_cyr".equals(currentLanguage)) {
             langUz.setText("● Ўз");
+            langUz.setTextColor(0xFFFFFFFF);
+            langUz.setBackgroundColor(0xFF1E3653);
+        } else if ("oz_lat".equals(currentLanguage)) {
+            langUz.setText("● O‘z");
             langUz.setTextColor(0xFFFFFFFF);
             langUz.setBackgroundColor(0xFF1E3653);
         } else if ("ru_cyr".equals(currentLanguage)) {
@@ -177,7 +203,11 @@ public class HuquqiyKeyboardService extends InputMethodService {
     public void onStartInputView(EditorInfo info, boolean restarting) {
         super.onStartInputView(info, restarting);
         currentSentence.setLength(0);
-        
+        // Start input with single Shift active (Auto-capital first letter)
+        if (shiftState == 0) {
+            shiftState = 1;
+        }
+
         int variation = info.inputType & InputType.TYPE_MASK_VARIATION;
         int inputClass = info.inputType & InputType.TYPE_MASK_CLASS;
 
@@ -190,6 +220,8 @@ public class HuquqiyKeyboardService extends InputMethodService {
         if (isPasswordSensitive || !isLegalCheckEnabled) {
             warningCardContainer.setVisibility(View.GONE);
         }
+
+        buildKeyboardKeys();
     }
 
     private String getSpacebarLabel() {
@@ -199,7 +231,16 @@ public class HuquqiyKeyboardService extends InputMethodService {
         return "ENGLISH";
     }
 
+    private boolean isShiftKey(String key) {
+        return "⇧".equals(key) || "⇪".equals(key) || "⇫".equals(key);
+    }
+
+    private boolean isSpecialKey(String key) {
+        return isShiftKey(key) || "⌫".equals(key) || "?123".equals(key) || "ABC".equals(key) || "🌐".equals(key) || "↵".equals(key) || key.equals(getSpacebarLabel());
+    }
+
     private void buildKeyboardKeys() {
+        if (keyboardKeysLayout == null) return;
         keyboardKeysLayout.removeAllViews();
 
         if (isSymbols) {
@@ -220,21 +261,27 @@ public class HuquqiyKeyboardService extends InputMethodService {
         String[] row3;
         String[] row4 = {"?123", "🌐", getSpacebarLabel(), ".", "↵"};
 
-        if ("oz_lat".equals(currentLanguage) || "eng".equals(currentLanguage)) {
+        String shiftSymbol = (shiftState == 2) ? "⇫" : "⇧";
+
+        if ("oz_lat".equals(currentLanguage)) {
+            row1 = new String[]{"q", "w", "e", "r", "t", "y", "u", "i", "o", "p"};
+            row2 = new String[]{"a", "s", "d", "f", "g", "h", "j", "k", "l", "o‘"};
+            row3 = new String[]{shiftSymbol, "z", "x", "c", "v", "b", "n", "m", "g‘", "⌫"};
+        } else if ("eng".equals(currentLanguage)) {
             row1 = new String[]{"q", "w", "e", "r", "t", "y", "u", "i", "o", "p"};
             row2 = new String[]{"a", "s", "d", "f", "g", "h", "j", "k", "l"};
-            row3 = new String[]{"⇧", "z", "x", "c", "v", "b", "n", "m", "⌫"};
+            row3 = new String[]{shiftSymbol, "z", "x", "c", "v", "b", "n", "m", "⌫"};
         } else if ("oz_cyr".equals(currentLanguage)) {
             row1 = new String[]{"й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ў"};
             row2 = new String[]{"ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "қ"};
-            row3 = new String[]{"⇧", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "ғ", "ҳ", "⌫"};
+            row3 = new String[]{shiftSymbol, "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "ғ", "ҳ", "⌫"};
         } else { // "ru_cyr"
             row1 = new String[]{"й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ"};
             row2 = new String[]{"ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э"};
-            row3 = new String[]{"⇧", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "⌫"};
+            row3 = new String[]{shiftSymbol, "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "⌫"};
         }
 
-        if (isShifted) {
+        if (shiftState != 0) {
             row1 = applyUppercase(row1);
             row2 = applyUppercase(row2);
             row3 = applyUppercase(row3);
@@ -249,10 +296,10 @@ public class HuquqiyKeyboardService extends InputMethodService {
     private String[] applyUppercase(String[] keys) {
         String[] upper = new String[keys.length];
         for (int i = 0; i < keys.length; i++) {
-            if ("⇧".equals(keys[i]) || "⌫".equals(keys[i])) {
+            if (isSpecialKey(keys[i])) {
                 upper[i] = keys[i];
             } else {
-                upper[i] = keys[i].toUpperCase();
+                upper[i] = keys[i].toUpperCase(java.util.Locale.ROOT);
             }
         }
         return upper;
@@ -271,10 +318,17 @@ public class HuquqiyKeyboardService extends InputMethodService {
             final Button btn = new Button(this);
             btn.setText(keyLabel);
             btn.setTextColor(0xFFFFFFFF);
-            btn.setTextSize(keys.length > 10 ? 14 : 16);
+
+            int baseSize = keys.length > 10 ? 15 : 17;
+            if (shiftState != 0 && !isSpecialKey(keyLabel)) {
+                baseSize += 1;
+                btn.setTypeface(null, android.graphics.Typeface.BOLD);
+            }
+            btn.setTextSize(baseSize);
             btn.setPadding(0, 0, 0, 0);
 
             boolean isSpace = keyLabel.equals(getSpacebarLabel());
+            boolean isShift = isShiftKey(keyLabel);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0,
                     120,
@@ -285,19 +339,24 @@ public class HuquqiyKeyboardService extends InputMethodService {
 
             if (keyLabel.equals("↵")) {
                 btn.setBackgroundColor(0xFF1976F3);
-            } else if (keyLabel.equals("⇧") || keyLabel.equals("⌫") || keyLabel.equals("?123") || keyLabel.equals("ABC") || keyLabel.equals("🌐")) {
+            } else if (isShift || keyLabel.equals("⌫") || keyLabel.equals("?123") || keyLabel.equals("ABC") || keyLabel.equals("🌐")) {
                 btn.setBackgroundColor(0xFF162C46);
                 btn.setTextColor(0xFF94A3B8);
-                if (keyLabel.equals("⇧") && isShifted) {
-                    btn.setBackgroundColor(0xFF2563EB);
-                    btn.setTextColor(0xFFFFFFFF);
+                if (isShift) {
+                    if (shiftState == 1) {
+                        btn.setBackgroundColor(0xFF2563EB); // Active Blue for Shift Once
+                        btn.setTextColor(0xFFFFFFFF);
+                    } else if (shiftState == 2) {
+                        btn.setBackgroundColor(0xFF1D4ED8); // Active Darker Blue for Caps Lock
+                        btn.setTextColor(0xFF67E8F9); // Highlighted Cyan icon for Caps Lock
+                    }
                 }
             } else {
                 btn.setBackgroundColor(0xFF1E3653);
             }
 
             if (keyLabel.equals("⌫")) {
-                // Point 3 requirement: Hold-to-delete continuous backspace (System keyboard behavior)
+                // Hold-to-delete continuous backspace
                 btn.setOnTouchListener(new View.OnTouchListener() {
                     private Handler repeatHandler = new Handler(Looper.getMainLooper());
                     private Runnable repeatRunnable;
@@ -306,6 +365,7 @@ public class HuquqiyKeyboardService extends InputMethodService {
                     public boolean onTouch(View v, MotionEvent event) {
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
+                                v.animate().scaleX(0.92f).scaleY(0.92f).setDuration(40).start();
                                 v.setPressed(true);
                                 handleKeyPress("⌫");
 
@@ -324,6 +384,7 @@ public class HuquqiyKeyboardService extends InputMethodService {
 
                             case MotionEvent.ACTION_UP:
                             case MotionEvent.ACTION_CANCEL:
+                                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(60).start();
                                 v.setPressed(false);
                                 if (repeatRunnable != null) {
                                     repeatHandler.removeCallbacks(repeatRunnable);
@@ -334,12 +395,47 @@ public class HuquqiyKeyboardService extends InputMethodService {
                     }
                 });
             } else {
-                btn.setOnClickListener(new View.OnClickListener() {
+                btn.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
-                        handleKeyPress(keyLabel);
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                v.animate().scaleX(0.92f).scaleY(0.92f).setDuration(40).start();
+                                break;
+                            case MotionEvent.ACTION_UP:
+                            case MotionEvent.ACTION_CANCEL:
+                                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(60).start();
+                                break;
+                        }
+                        return false;
                     }
                 });
+
+                if (keyLabel.equals("🌐")) {
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            handleKeyPress(keyLabel);
+                        }
+                    });
+                    btn.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            if (imm != null) {
+                                imm.showInputMethodPicker();
+                            }
+                            return true;
+                        }
+                    });
+                } else {
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            handleKeyPress(keyLabel);
+                        }
+                    });
+                }
             }
 
             row.addView(btn);
@@ -348,8 +444,59 @@ public class HuquqiyKeyboardService extends InputMethodService {
         return row;
     }
 
+    private void toggleShift() {
+        long currentTime = System.currentTimeMillis();
+        long timeSinceLastClick = currentTime - lastShiftClickTime;
+
+        if (shiftState == 2) {
+            // If currently in CAPS LOCK mode, tapping Shift turns it OFF (lowercase)
+            shiftState = 0;
+        } else if (timeSinceLastClick < 500 && timeSinceLastClick > 0) {
+            // Double tap detected! Activate CAPS LOCK mode (permanently uppercase)
+            shiftState = 2;
+        } else {
+            // Single tap logic
+            if (shiftState == 0) {
+                shiftState = 1; // Lowercase -> Shift once
+            } else if (shiftState == 1) {
+                shiftState = 0; // Shift once -> Lowercase
+            }
+        }
+
+        lastShiftClickTime = currentTime;
+
+        // Smooth enlarge animation when toggling Shift/Caps Lock (making letters pop/grow slightly bigger)
+        if (keyboardKeysLayout != null) {
+            keyboardKeysLayout.animate()
+                .scaleX(1.04f)
+                .scaleY(1.04f)
+                .setDuration(70)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        buildKeyboardKeys();
+                        if (keyboardKeysLayout != null) {
+                            keyboardKeysLayout.animate()
+                                .scaleX(1.0f)
+                                .scaleY(1.0f)
+                                .setDuration(100)
+                                .start();
+                        }
+                    }
+                })
+                .start();
+        } else {
+            buildKeyboardKeys();
+        }
+    }
+
     private void handleKeyPress(String keyLabel) {
         InputConnection ic = getCurrentInputConnection();
+
+        if (!isShiftKey(keyLabel)) {
+            // Reset shift double-tap timer when typing non-shift keys
+            lastShiftClickTime = 0;
+        }
 
         if (keyLabel.equals("⌫")) {
             if (ic != null) {
@@ -363,14 +510,26 @@ public class HuquqiyKeyboardService extends InputMethodService {
                 ic.commitText("\n", 1);
             }
             currentSentence.setLength(0);
+            if (shiftState == 0) {
+                shiftState = 1;
+                buildKeyboardKeys();
+            }
         } else if (keyLabel.equals(getSpacebarLabel())) {
             if (ic != null) {
                 ic.commitText(" ", 1);
             }
             currentSentence.append(" ");
-        } else if (keyLabel.equals("⇧")) {
-            isShifted = !isShifted;
-            buildKeyboardKeys();
+
+            // Auto-capitalization after sentence end (. ! ?)
+            String str = currentSentence.toString().trim();
+            if (str.endsWith(".") || str.endsWith("!") || str.endsWith("?")) {
+                if (shiftState == 0) {
+                    shiftState = 1;
+                    buildKeyboardKeys();
+                }
+            }
+        } else if (isShiftKey(keyLabel)) {
+            toggleShift();
             return;
         } else if (keyLabel.equals("?123")) {
             isSymbols = true;
@@ -381,20 +540,18 @@ public class HuquqiyKeyboardService extends InputMethodService {
             buildKeyboardKeys();
             return;
         } else if (keyLabel.equals("🌐")) {
-            // Cycle language & show system input method picker
             cycleLanguage();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showInputMethodPicker();
-            }
             return;
         } else {
             if (ic != null) {
                 ic.commitText(keyLabel, 1);
             }
             currentSentence.append(keyLabel);
-            if (isShifted) {
-                isShifted = false;
+
+            // Revert shift back to lowercase ONLY if shiftState == 1 (SHIFT ONCE)
+            // If shiftState == 2 (CAPS LOCK), letters STAY UPPERCASE!
+            if (shiftState == 1) {
+                shiftState = 0;
                 buildKeyboardKeys();
             }
         }
@@ -405,7 +562,9 @@ public class HuquqiyKeyboardService extends InputMethodService {
     }
 
     private void cycleLanguage() {
-        if ("oz_cyr".equals(currentLanguage) || "oz_lat".equals(currentLanguage)) {
+        if ("oz_cyr".equals(currentLanguage)) {
+            currentLanguage = "oz_lat";
+        } else if ("oz_lat".equals(currentLanguage)) {
             currentLanguage = "ru_cyr";
         } else if ("ru_cyr".equals(currentLanguage)) {
             currentLanguage = "eng";
@@ -414,6 +573,35 @@ public class HuquqiyKeyboardService extends InputMethodService {
         }
         updateToolbarState();
         buildKeyboardKeys();
+    }
+
+    private void showWarningWithAnimation() {
+        if (warningCardContainer == null) return;
+        if (warningCardContainer.getVisibility() != View.VISIBLE) {
+            warningCardContainer.setVisibility(View.VISIBLE);
+            android.view.animation.Animation fadeIn = new android.view.animation.AlphaAnimation(0.0f, 1.0f);
+            fadeIn.setDuration(250);
+            warningCardContainer.startAnimation(fadeIn);
+        }
+    }
+
+    private void hideWarningWithAnimation() {
+        if (warningCardContainer == null) return;
+        if (warningCardContainer.getVisibility() == View.VISIBLE) {
+            android.view.animation.Animation fadeOut = new android.view.animation.AlphaAnimation(1.0f, 0.0f);
+            fadeOut.setDuration(200);
+            fadeOut.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(android.view.animation.Animation animation) {}
+                @Override
+                public void onAnimationEnd(android.view.animation.Animation animation) {
+                    warningCardContainer.setVisibility(View.GONE);
+                }
+                @Override
+                public void onAnimationRepeat(android.view.animation.Animation animation) {}
+            });
+            warningCardContainer.startAnimation(fadeOut);
+        }
     }
 
     private void triggerDebouncedLegalAnalysis() {
@@ -425,18 +613,27 @@ public class HuquqiyKeyboardService extends InputMethodService {
             @Override
             public void run() {
                 if (!isLegalCheckEnabled || isPasswordSensitive) {
-                    warningCardContainer.setVisibility(View.GONE);
+                    hideWarningWithAnimation();
                     return;
                 }
                 LegalAnalysisEngine.LegalMatchResult result = LegalAnalysisEngine.analyzeText(currentSentence.toString());
                 if (result.hasMatch) {
-                    warningTitle.setText(result.warningTitle);
-                    warningDescription.setText(result.warningText);
-                    warningDocTitle.setText(result.documentTitle);
+                    if (warningTitle != null) warningTitle.setText(result.warningTitle);
+                    if (warningDescription != null) warningDescription.setText(result.warningText);
+                    if (warningDocTitle != null) {
+                        String docStr = result.documentTitle;
+                        if (result.articleNumber != null && !result.articleNumber.isEmpty()) {
+                            docStr += " (" + result.articleNumber + ")";
+                        }
+                        warningDocTitle.setText(docStr);
+                    }
+                    if (warningPenalty != null && result.penaltyText != null) {
+                        warningPenalty.setText("⚠️ " + result.penaltyText);
+                    }
                     currentLexUrl = result.lexUrl;
-                    warningCardContainer.setVisibility(View.VISIBLE);
+                    showWarningWithAnimation();
                 } else {
-                    warningCardContainer.setVisibility(View.GONE);
+                    hideWarningWithAnimation();
                 }
             }
         };

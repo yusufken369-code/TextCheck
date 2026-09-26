@@ -11,3 +11,6 @@ npm-debug.*
 *.eas-build-local*
 .env
 .env.local
+tmp/
+*.log
+android/*.txt

@@ -4,90 +4,149 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#122B49"
+    android:animateLayoutChanges="true"
     android:paddingBottom="8dp">
 
-    <!-- Legal Warning Card Header Container -->
+    <!-- Legal Warning Horizontal Scrollable Strip -->
     <LinearLayout
         android:id="@+id/warningCardContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#FFF5F5"
-        android:padding="12dp"
-        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#FFF0F0"
+        android:animateLayoutChanges="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:text="!"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:gravity="center"
-                android:background="#DC2626" />
-
-            <TextView
-                android:id="@+id/warningTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Huquqiy ogohlantirish (Qizil Ogohlantirish)"
-                android:textColor="#DC2626"
-                android:textSize="14.5sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="8dp" />
-
-            <TextView
-                android:id="@+id/closeWarningBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="✕"
-                android:textColor="#991B1B"
-                android:textSize="14sp"
-                android:padding="4dp" />
-        </LinearLayout>
-
+        <!-- Fixed Left Warning Badge -->
         <TextView
-            android:id="@+id/warningDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ushbu matn haqoratga oid huquqiy normalarga aloqador bo‘lishi mumkin."
-            android:textColor="#B91C1C"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:text="!"
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="13sp"
-            android:layout_marginTop="6dp" />
+            android:gravity="center"
+            android:background="#DC2626"
+            android:layout_marginRight="8dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Horizontal Scrollable Cards View -->
+        <HorizontalScrollView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:overScrollMode="never">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tegishli modda: "
-                android:textColor="#7F1D1D"
-                android:textSize="11sp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/warningDocTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ma’muriy javobgarlik to‘g‘risidagi kodeks (Modda 183)"
-                android:textColor="#DC2626"
-                android:textSize="12.5sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                <!-- Card 1: Warning Title Badge -->
+                <TextView
+                    android:id="@+id/warningTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Huquqiy ogohlantirish"
+                    android:textColor="#DC2626"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:background="#FEE2E2"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginRight="6dp" />
+
+                <!-- Card 2: Warning Message Text -->
+                <TextView
+                    android:id="@+id/warningDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ushbu matn haqoratga oid huquqiy normalarga aloqador bo‘lishi mumkin."
+                    android:textColor="#991B1B"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:singleLine="true"
+                    android:background="#FEF2F2"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginRight="6dp" />
+
+                <!-- Card 3: Relevant Legal Article Link -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="#FEE2E2"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginRight="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⚖️ Tegishli modda: "
+                        android:textColor="#7F1D1D"
+                        android:textSize="11.5sp" />
+
+                    <TextView
+                        android:id="@+id/warningDocTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ma’muriy javobgarlik to‘g‘risidagi kodeks (Modda 183)"
+                        android:textColor="#DC2626"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Card 4: Legal Penalty / Consequence Info -->
+                <TextView
+                    android:id="@+id/warningPenalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚠️ Oqibat: BHM 2-5 baravarigacha jarima"
+                    android:textColor="#B91C1C"
+                    android:textSize="11.5sp"
+                    android:textStyle="bold"
+                    android:background="#FEF2F2"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Fixed Right Dismiss Button -->
+        <TextView
+            android:id="@+id/closeWarningBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✕"
+            android:textColor="#991B1B"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:paddingLeft="8dp"
+            android:paddingRight="6dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
     </LinearLayout>
 
     <!-- Top Toolbar of System Keyboard -->

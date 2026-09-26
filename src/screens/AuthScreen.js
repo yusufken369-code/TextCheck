@@ -21,10 +21,12 @@ import {
   BackArrowIcon
 } from '../components/Icons';
 import { useLanguage } from '../context/LanguageContext';
+import supabase from '../services/supabaseClient';
 
 export default function AuthScreen({ initialTab = 'login', onAuthSuccess, onGoBack }) {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState(initialTab); // 'login' | 'register'
+  const [loading, setLoading] = useState(false);
 
   // Form State - Login
   const [loginIdentifier, setLoginIdentifier] = useState('');
@@ -54,7 +56,7 @@ export default function AuthScreen({ initialTab = 'login', onAuthSuccess, onGoBa
   };
 
   // Handle Login Submit
-  const handleLoginSubmit = () => {
+  const handleLoginSubmit = async () => {
     setLoginError('');
     if (!loginIdentifier.trim()) {
       setLoginError(t('identifierRequired'));
@@ -65,14 +67,37 @@ export default function AuthScreen({ initialTab = 'login', onAuthSuccess, onGoBa
       return;
     }
 
-    Alert.alert(t('loginButton'), t('loginSuccessMsg'));
-    if (onAuthSuccess) {
-      onAuthSuccess({ identifier: loginIdentifier });
+    setLoading(true);
+    try {
+      // Determine if identifier is email or username
+      const emailToUse = loginIdentifier.includes('@')
+        ? loginIdentifier.trim()
+        : `${loginIdentifier.trim()}@huquqiy.uz`;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: emailToUse,
+        password: loginPassword,
+      });
+
+      setLoading(false);
+
+      if (error) {
+        setLoginError(error.message || t('loginErrorMsg') || 'Tizimga kirishda xatolik yuz berdi');
+        return;
+      }
+
+      Alert.alert(t('loginButton'), t('loginSuccessMsg'));
+      if (onAuthSuccess) {
+        onAuthSuccess({ identifier: loginIdentifier, user: data?.user });
+      }
+    } catch (err) {
+      setLoading(false);
+      setLoginError(err.message || 'Xatolik yuz berdi');
     }
   };
 
   // Handle Register Submit
-  const handleRegisterSubmit = () => {
+  const handleRegisterSubmit = async () => {
     let hasError = false;
     setUsernameError('');
     setPasswordMatchError('');
@@ -94,9 +119,34 @@ export default function AuthScreen({ initialTab = 'login', onAuthSuccess, onGoBa
 
     if (hasError) return;
 
-    Alert.alert(t('registerButton'), t('registerSuccessMsg'));
-    if (onAuthSuccess) {
-      onAuthSuccess({ username: regUsername, email: regEmail });
+    setLoading(true);
+    try {
+      const emailToUse = regEmail.trim() || `${regUsername.trim()}@huquqiy.uz`;
+
+      const { data, error } = await supabase.auth.signUp({
+        email: emailToUse,
+        password: regPassword,
+        options: {
+          data: {
+            username: regUsername.trim()
+          }
+        }
+      });
+
+      setLoading(false);
+
+      if (error) {
+        Alert.alert('Ro‘yxatdan o‘tishda xatolik', error.message);
+        return;
+      }
+
+      Alert.alert(t('registerButton'), t('registerSuccessMsg'));
+      if (onAuthSuccess) {
+        onAuthSuccess({ username: regUsername, email: regEmail, user: data?.user });
+      }
+    } catch (err) {
+      setLoading(false);
+      Alert.alert('Xatolik', err.message);
     }
   };
 

@@ -54,7 +54,7 @@ export default function LanguageSelectScreen({ onLanguageSelected }) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#071426" translucent />
-      
+
       {/* Background Watermark */}
       <View style={styles.watermarkPattern} pointerEvents="none">
         <View style={styles.watermarkLineVertical} />
