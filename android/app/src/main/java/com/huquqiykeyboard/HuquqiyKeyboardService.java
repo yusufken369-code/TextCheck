@@ -325,6 +325,8 @@ public class HuquqiyKeyboardService extends InputMethodService {
 
         for (final String keyLabel : keys) {
             final Button btn = new Button(this);
+            btn.setAllCaps(false);
+            btn.setTransformationMethod(null);
             btn.setText(keyLabel);
             btn.setTextColor(0xFFFFFFFF);
 
