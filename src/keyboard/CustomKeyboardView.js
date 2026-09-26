@@ -135,7 +135,7 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
             activeOpacity={0.65}
           >
             <Text style={[styles.specialKeyText, shiftState > 0 && { color: shiftState === 2 ? '#67E8F9' : '#FFFFFF' }]}>
-              {shiftState === 2 ? '⇫' : '⇧'}
+              {shiftState === 0 ? '⇧' : shiftState === 1 ? '⬆' : '⇪'}
             </Text>
           </TouchableOpacity>
 

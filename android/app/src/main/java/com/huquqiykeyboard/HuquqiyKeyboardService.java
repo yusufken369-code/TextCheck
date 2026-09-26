@@ -203,10 +203,8 @@ public class HuquqiyKeyboardService extends InputMethodService {
     public void onStartInputView(EditorInfo info, boolean restarting) {
         super.onStartInputView(info, restarting);
         currentSentence.setLength(0);
-        // Start input with single Shift active (Auto-capital first letter)
-        if (shiftState == 0) {
-            shiftState = 1;
-        }
+        // Start keyboard in lowercase mode by default so keys show lowercase letters (q, w, e, r, t...)
+        shiftState = 0;
 
         int variation = info.inputType & InputType.TYPE_MASK_VARIATION;
         int inputClass = info.inputType & InputType.TYPE_MASK_CLASS;
@@ -232,7 +230,7 @@ public class HuquqiyKeyboardService extends InputMethodService {
     }
 
     private boolean isShiftKey(String key) {
-        return "⇧".equals(key) || "⇪".equals(key) || "⇫".equals(key);
+        return "⇧".equals(key) || "⇪".equals(key) || "⇫".equals(key) || "⬆".equals(key);
     }
 
     private boolean isSpecialKey(String key) {
@@ -253,6 +251,8 @@ public class HuquqiyKeyboardService extends InputMethodService {
             keyboardKeysLayout.addView(createKeyRow(row2));
             keyboardKeysLayout.addView(createKeyRow(row3));
             keyboardKeysLayout.addView(createKeyRow(row4));
+            keyboardKeysLayout.requestLayout();
+            keyboardKeysLayout.invalidate();
             return;
         }
 
@@ -261,7 +261,14 @@ public class HuquqiyKeyboardService extends InputMethodService {
         String[] row3;
         String[] row4 = {"?123", "🌐", getSpacebarLabel(), ".", "↵"};
 
-        String shiftSymbol = (shiftState == 2) ? "⇫" : "⇧";
+        String shiftSymbol;
+        if (shiftState == 0) {
+            shiftSymbol = "⇧";
+        } else if (shiftState == 1) {
+            shiftSymbol = "⬆";
+        } else {
+            shiftSymbol = "⇪";
+        }
 
         if ("oz_lat".equals(currentLanguage)) {
             row1 = new String[]{"q", "w", "e", "r", "t", "y", "u", "i", "o", "p"};
@@ -291,6 +298,8 @@ public class HuquqiyKeyboardService extends InputMethodService {
         keyboardKeysLayout.addView(createKeyRow(row2));
         keyboardKeysLayout.addView(createKeyRow(row3));
         keyboardKeysLayout.addView(createKeyRow(row4));
+        keyboardKeysLayout.requestLayout();
+        keyboardKeysLayout.invalidate();
     }
 
     private String[] applyUppercase(String[] keys) {
@@ -321,8 +330,9 @@ public class HuquqiyKeyboardService extends InputMethodService {
 
             int baseSize = keys.length > 10 ? 15 : 17;
             if (shiftState != 0 && !isSpecialKey(keyLabel)) {
-                baseSize += 1;
                 btn.setTypeface(null, android.graphics.Typeface.BOLD);
+            } else {
+                btn.setTypeface(null, android.graphics.Typeface.NORMAL);
             }
             btn.setTextSize(baseSize);
             btn.setPadding(0, 0, 0, 0);
@@ -464,30 +474,7 @@ public class HuquqiyKeyboardService extends InputMethodService {
         }
 
         lastShiftClickTime = currentTime;
-
-        // Smooth enlarge animation when toggling Shift/Caps Lock (making letters pop/grow slightly bigger)
-        if (keyboardKeysLayout != null) {
-            keyboardKeysLayout.animate()
-                .scaleX(1.04f)
-                .scaleY(1.04f)
-                .setDuration(70)
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        buildKeyboardKeys();
-                        if (keyboardKeysLayout != null) {
-                            keyboardKeysLayout.animate()
-                                .scaleX(1.0f)
-                                .scaleY(1.0f)
-                                .setDuration(100)
-                                .start();
-                        }
-                    }
-                })
-                .start();
-        } else {
-            buildKeyboardKeys();
-        }
+        buildKeyboardKeys();
     }
 
     private void handleKeyPress(String keyLabel) {
