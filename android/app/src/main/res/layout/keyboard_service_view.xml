@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keyboardRootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#122B49"
     android:animateLayoutChanges="true"
-    android:paddingBottom="8dp">
+    android:paddingBottom="0dp">
 
     <!-- Legal Warning Horizontal Scrollable Strip -->
     <LinearLayout
@@ -154,10 +155,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -221,6 +222,18 @@
             android:layout_marginRight="6dp" />
 
         <TextView
+            android:id="@+id/changeThemeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎨"
+            android:textSize="14sp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_marginRight="4dp" />
+
+        <TextView
             android:id="@+id/hideKeyboardBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -239,7 +252,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp" />
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="1dp" />
 
 </LinearLayout>

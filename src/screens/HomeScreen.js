@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet
 } from 'react-native';
+import ThemeSelectorModal from '../components/ThemeSelectorModal';
 import HeaderPresentation from '../components/HeaderPresentation';
 import LegalWarningCard from '../components/LegalWarningCard';
 import { LockIcon, GlobeIcon, CheckmarkIcon } from '../components/Icons';
@@ -18,6 +19,7 @@ export default function HomeScreen({ onNavigateToArticle, onOpenKeyboardSettings
 
   const [testText, setTestText] = useState('');
   const [isConnected, setIsConnected] = useState(false);
+  const [isThemeModalVisible, setIsThemeModalVisible] = useState(false);
 
   // Set initial sample text according to current language
   useEffect(() => {
@@ -95,6 +97,31 @@ export default function HomeScreen({ onNavigateToArticle, onOpenKeyboardSettings
           </TouchableOpacity>
         </View>
 
+        {/* 1.5 NEW CARD: SIZ KLAVIATURAGA DIZAYN OLASIZMI? */}
+        <View style={styles.themePromptCard}>
+          <View style={styles.themePromptHeader}>
+            <View style={styles.themeIconBadge}>
+              <Text style={{ fontSize: 22 }}>🎨</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.themePromptTitle}>
+                {t('themePromptTitle')}
+              </Text>
+              <Text style={styles.themePromptSub}>
+                {t('themePromptSub')}
+              </Text>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.themeOpenButton}
+            onPress={() => setIsThemeModalVisible(true)}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.themeOpenButtonText}>{t('themeOpenButton')}</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* 2. LIVE KEYBOARD & RED WARNING TESTER */}
         <View style={styles.testerCard}>
           <View style={styles.testerHeader}>
@@ -124,10 +151,18 @@ export default function HomeScreen({ onNavigateToArticle, onOpenKeyboardSettings
 
             <TouchableOpacity
               style={[styles.presetBtn, styles.presetBtnDarkRed]}
-              onPress={() => handleQuickSample(t('samplePoraText'))}
+              onPress={() => handleQuickSample(t('sampleTahdidText'))}
               activeOpacity={0.8}
             >
-              <Text style={styles.presetBtnTextDarkRed}>⛔ {t('quickTestBtnPora')}</Text>
+              <Text style={styles.presetBtnTextDarkRed}>🗡️ {t('quickTestBtnTahdid')}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.presetBtn, styles.presetBtnRed]}
+              onPress={() => handleQuickSample(t('sampleBuzishText'))}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.presetBtnTextRed}>💻 {t('quickTestBtnBuzish')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -201,6 +236,12 @@ export default function HomeScreen({ onNavigateToArticle, onOpenKeyboardSettings
           </View>
         </View>
       </ScrollView>
+
+      {/* Theme Selector Modal */}
+      <ThemeSelectorModal
+        visible={isThemeModalVisible}
+        onClose={() => setIsThemeModalVisible(false)}
+      />
     </View>
   );
 }
@@ -321,6 +362,58 @@ const styles = StyleSheet.create({
   enableButtonText: {
     color: '#FFFFFF',
     fontSize: 15,
+    fontWeight: '800'
+  },
+  themePromptCard: {
+    backgroundColor: '#0F1E33',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1.5,
+    borderColor: '#3B82F6',
+    shadowColor: '#2563EB',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4
+  },
+  themePromptHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 14
+  },
+  themeIconBadge: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12
+  },
+  themePromptTitle: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
+    marginBottom: 3
+  },
+  themePromptSub: {
+    color: '#94A3B8',
+    fontSize: 12.5,
+    lineHeight: 18
+  },
+  themeOpenButton: {
+    backgroundColor: 'rgba(37, 99, 235, 0.15)',
+    borderWidth: 1.5,
+    borderColor: '#2563EB',
+    borderRadius: 12,
+    height: 46,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  themeOpenButtonText: {
+    color: '#60A5FA',
+    fontSize: 14,
     fontWeight: '800'
   },
   testerCard: {

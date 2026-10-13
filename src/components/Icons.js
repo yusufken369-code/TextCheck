@@ -256,6 +256,37 @@ export const ShieldScalesLogo = ({ size = 80 }) => {
   );
 };
 
+export const ShieldIcon = ({ size = 20, color = '#2563EB' }) => {
+  return (
+    <View style={{ width: size, height: size * 1.15, alignItems: 'center', justifyContent: 'center' }}>
+      <View
+        style={{
+          width: size * 0.9,
+          height: size * 1.1,
+          borderRadius: size * 0.2,
+          borderBottomLeftRadius: size * 0.5,
+          borderBottomRightRadius: size * 0.5,
+          borderWidth: 1.8,
+          borderColor: color,
+          backgroundColor: 'transparent'
+        }}
+      />
+    </View>
+  );
+};
+
+export const BookIcon = ({ size = 20, color = '#667085' }) => {
+  return (
+    <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ width: size * 0.85, height: size * 0.75, borderWidth: 1.8, borderColor: color, borderRadius: 2 }}>
+        <View style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 1.5, backgroundColor: color }} />
+      </View>
+    </View>
+  );
+};
+
+export const SettingsIcon = SettingsNavIcon;
+
 const styles = StyleSheet.create({
   shieldOuter: {
     borderWidth: 2,
@@ -295,3 +326,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+

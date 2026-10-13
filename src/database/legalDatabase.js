@@ -1,5 +1,6 @@
 // Legal Database of Uzbekistan Legislation
 // Source: Verified LexUZ database
+import { JINOYAT_KODEKSI_ARTICLES } from './articles_jk';
 
 export const LEGAL_DOCUMENTS = [
   {
@@ -76,7 +77,7 @@ export const LEGAL_DOCUMENTS = [
   }
 ];
 
-export const LEGAL_ARTICLES = [
+const BASE_LEGAL_ARTICLES = [
   {
     id: 'mjt-183',
     documentId: 'mamuriy-kodeks',
@@ -208,3 +209,10 @@ export const LEGAL_ARTICLES = [
     keywords: ['fuqarolik', 'sha\'n', 'obro\'', 'raddiya', 'himoya']
   }
 ];
+
+// Merge base articles with Jinoyat Kodeksi articles (avoiding duplicate IDs)
+const mergedMap = new Map();
+BASE_LEGAL_ARTICLES.forEach(art => mergedMap.set(art.id, art));
+JINOYAT_KODEKSI_ARTICLES.forEach(art => mergedMap.set(art.id, art));
+
+export const LEGAL_ARTICLES = Array.from(mergedMap.values());

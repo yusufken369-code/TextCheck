@@ -165,7 +165,9 @@ export default function CustomKeyboardView({ onKeyPress, onBackspace, onSpace, o
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.key, styles.spaceKey]} onPress={onSpace} activeOpacity={0.65}>
-            <Text style={styles.spaceText}>O‘zbekcha</Text>
+            <Text style={styles.spaceText}>
+              {activeLang === 'Рус' ? 'Русский' : (activeLang === 'Eng' ? 'English' : 'O‘zbekcha')}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.key, styles.specialKey, { flex: 0.8 }]} onPress={() => handleCharPress('.')} activeOpacity={0.65}>

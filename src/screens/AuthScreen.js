@@ -136,7 +136,7 @@ export default function AuthScreen({ initialTab = 'login', onAuthSuccess, onGoBa
       setLoading(false);
 
       if (error) {
-        Alert.alert('Ro‘yxatdan o‘tishda xatolik', error.message);
+        Alert.alert(t('registerErrorTitle'), error.message);
         return;
       }
 
@@ -146,7 +146,7 @@ export default function AuthScreen({ initialTab = 'login', onAuthSuccess, onGoBa
       }
     } catch (err) {
       setLoading(false);
-      Alert.alert('Xatolik', err.message);
+      Alert.alert(t('errorAlertTitle'), err.message);
     }
   };
 

@@ -38,7 +38,7 @@ export default function PrivacyScreen({ onGoBack }) {
             </Text>
           </View>
 
-          <Text style={styles.sectionTitle}>Maxfiylik Tamoyillari</Text>
+          <Text style={styles.sectionTitle}>{t('privacyPrinciplesTitle')}</Text>
 
           {/* Key Principles Checklist */}
           <View style={styles.principleCard}>
@@ -46,9 +46,9 @@ export default function PrivacyScreen({ onGoBack }) {
               <CheckmarkIcon size={14} color="#2563EB" />
             </View>
             <View style={styles.principleTextCol}>
-              <Text style={styles.principleTitle}>100% Offline Ishlash</Text>
+              <Text style={styles.principleTitle}>{t('principle1Title')}</Text>
               <Text style={styles.principleDesc}>
-                Tizimda harflar va yozilgan so'zlar serverga yuborilmaydi
+                {t('principle1Desc')}
               </Text>
             </View>
           </View>
@@ -58,9 +58,9 @@ export default function PrivacyScreen({ onGoBack }) {
               <CheckmarkIcon size={14} color="#2563EB" />
             </View>
             <View style={styles.principleTextCol}>
-              <Text style={styles.principleTitle}>Avtomatik Himoya</Text>
+              <Text style={styles.principleTitle}>{t('principle2Title')}</Text>
               <Text style={styles.principleDesc}>
-                Maxfiy parollar va shaxsiy kartalar kiritilganda klaviatura avtomatik tahlildan to'xtaydi
+                {t('principle2Desc')}
               </Text>
             </View>
           </View>
@@ -70,9 +70,9 @@ export default function PrivacyScreen({ onGoBack }) {
               <CheckmarkIcon size={14} color="#2563EB" />
             </View>
             <View style={styles.principleTextCol}>
-              <Text style={styles.principleTitle}>Rasmiy LexUZ Baza</Text>
+              <Text style={styles.principleTitle}>{t('principle3Title')}</Text>
               <Text style={styles.principleDesc}>
-                Faqat rasmiy LexUZ bazasidagi O'zbekiston Respublikasi moddalari asosida ogohlantirish beradi
+                {t('principle3Desc')}
               </Text>
             </View>
           </View>

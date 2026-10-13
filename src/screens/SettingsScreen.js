@@ -48,11 +48,11 @@ export default function SettingsScreen({
   };
 
   const handleGuidePress = () => {
-    Alert.alert(t('helpGuideTitle'), '1. Android Sozlamalar -> Tillar va kiritish\n2. Virtual klaviatura menyusini tanlang\n3. "Huquqiy Keyboard"ni yoqing.');
+    Alert.alert(t('helpGuideTitle'), t('helpGuideMessage'));
   };
 
   const handleAboutPress = () => {
-    Alert.alert(t('aboutAppTitle'), 'Huquqiy Keyboard v1.0.0\nLexUZ rasmiy bazasi asosida ishlaydi.');
+    Alert.alert(t('aboutAppTitle'), t('aboutAppMessage'));
   };
 
   const statusBarHeight = Platform.OS === 'android' ? (StatusBar.currentHeight || 24) + 24 : 16;

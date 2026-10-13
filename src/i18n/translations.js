@@ -44,6 +44,8 @@ export const translations = {
     loginSuccessMsg: "Tizimga muvaffaqiyatli kirdingiz!",
     registerSuccessMsg: "Ro‘yxatdan muvaffaqiyatli o‘tdingiz!",
     skipAuth: "Kirmasdan davom etish",
+    registerErrorTitle: "Ro‘yxatdan o‘tishda xatolik",
+    errorAlertTitle: "Xatolik",
 
     // Home Screen
     systemKeyboardTitle: "Huquq Check Klaviaturasini Ulash",
@@ -61,9 +63,13 @@ export const translations = {
     quickTestBtnHaqorat: "Haqorat matni",
     quickTestBtnTuhmat: "Tuhmat matni",
     quickTestBtnPora: "Pora matni",
+    quickTestBtnTahdid: "Tahdid matni",
+    quickTestBtnBuzish: "Buzg'unchilik",
     sampleHaqoratText: "Seni tarmoqda haqorat qilaman",
     sampleTuhmatText: "U odam bo'hton va tuhmat tarqatdi",
     samplePoraText: "Ishni hal qilish uchun pora beraman",
+    sampleTahdidText: "Seni o'ldiraman",
+    sampleBuzishText: "Akkauntingni buzaman va parolingni o'g'irlayman",
     safeStatusText: "Matn toza: Noqonuniy yoki taqiqlangan so'zlar aniqlanmadi.",
     legalPenaltyLabel: "⚖️ Nima bo‘lishi (Qonuniy jazo):",
     legalArticleLabel: "📜 Qaysi modda va hujjat:",
@@ -76,6 +82,22 @@ export const translations = {
     featureMultiLang: "Uch til: o‘zbek, rus, ingliz",
     typeMessagePlaceholder: "Xabar yozing...",
     onlineStatus: "online",
+
+    // Keyboard Theme Selection
+    themePromptTitle: "Siz klaviaturaga dizayn olasizmi?",
+    themePromptSub: "4 ta eksklyuziv premium dizaynlardan birini tanlang",
+    themeOpenButton: "✨ Dizayn tanlash (1:1 Premium)",
+    themeModalHeaderSub: "To‘g‘ri so‘z — qonun himoyasi",
+    themeModalHeaderRight: "Qonuniy, xavfsiz, ishonchli",
+    themeModalTitle: "Klaviatura Dizaynini Tanlang",
+    themeModalSubtitle: "O'zingizga yoqqan 1:1 eksklyuziv mavzuni tanlang",
+    themeSelectedBadge: "Tanlandi",
+    themeMockInputPlaceholder: "Qonuniy matn yozing...",
+    themeCloseBtn: "Taqdim etish & Chiqish",
+    themeDarkTitle: "1. Zamonaviy (Dark)",
+    themeLightTitle: "2. Minimal (Light)",
+    themeGradientTitle: "3. Gradient (Premium)",
+    themeLawTitle: "4. Premium (Law Style)",
 
     // Legislation Screen
     legislationTitle: "Qonunchilik bazasi",
@@ -99,11 +121,30 @@ export const translations = {
     helpGuideTitle: "Yordam va qo‘llanma",
     privacyPolicyTitle: "Maxfiylik siyosati",
     aboutAppTitle: "Ilova haqida",
+    helpGuideMessage: "1. Android Sozlamalar -> Tillar va kiritish\n2. Virtual klaviatura menyusini tanlang\n3. \"Huquqiy Keyboard\"ni yoqing.",
+    aboutAppMessage: "Huquqiy Keyboard v1.0.0\nLexUZ rasmiy bazasi asosida ishlaydi.",
 
     // Privacy Screen
     privacyTitle: "Maxfiylik siyosati",
     privacyDescHeader: "Foydalanuvchi ma'lumotlari xavfsizligi",
-    privacyDescBody: "Huquqiy Keyboard ilovasi sizning shaxsiy ma'lumotlaringiz, yozishmalaringiz va parollaringizni hech qachon uchinchi shaxslarga uzatmaydi. Barcha tekshiruvlar qurilmangizning o'zida offline tarzda amalga oshiriladi."
+    privacyDescBody: "Huquqiy Keyboard ilovasi sizning shaxsiy ma'lumotlaringiz, yozishmalaringiz va parollaringizni hech qachon uchinchi shaxslarga uzatmaydi. Barcha tekshiruvlar qurilmangizning o'zida offline tarzda amalga oshiriladi.",
+    privacyPrinciplesTitle: "Maxfiylik Tamoyillari",
+    principle1Title: "100% Offline Ishlash",
+    principle1Desc: "Tizimda harflar va yozilgan so'zlar serverga yuborilmaydi",
+    principle2Title: "Avtomatik Himoya",
+    principle2Desc: "Maxfiy parollar va shaxsiy kartalar kiritilganda klaviatura avtomatik tahlildan to'xtaydi",
+    principle3Title: "Rasmiy LexUZ Baza",
+    principle3Desc: "Faqat rasmiy LexUZ bazasidagi O'zbekiston Respublikasi moddalari asosida ogohlantirish beradi",
+
+    // Article Details Screen
+    articleDetailsTitle: "Maqola ma’lumoti",
+    articleNameLabel: "Modda nomi",
+    articleTextLabel: "Matn",
+    docNumberLabel: "Hujjat raqami:",
+    adoptionDateLabel: "Qabul qilingan sana:",
+    effectiveDateLabel: "Kuchga kirgan sana:",
+    sourceLabel: "Manba:",
+    openInLexUz: "LexUZ da ochish"
   },
   ru: {
     // Language Selection Screen
@@ -150,6 +191,8 @@ export const translations = {
     loginSuccessMsg: "Вы успешно вошли в систему!",
     registerSuccessMsg: "Вы успешно зарегистрировались!",
     skipAuth: "Продолжить без входа",
+    registerErrorTitle: "Ошибка при регистрации",
+    errorAlertTitle: "Ошибка",
 
     // Home Screen
     systemKeyboardTitle: "Подключение Huquq Check к клавиатуре",
@@ -167,9 +210,13 @@ export const translations = {
     quickTestBtnHaqorat: "Текст оскорбления",
     quickTestBtnTuhmat: "Текст клеветы",
     quickTestBtnPora: "Текст взятки",
+    quickTestBtnTahdid: "Текст угрозы",
+    quickTestBtnBuzish: "Взлом аккаунта",
     sampleHaqoratText: "Я оскорбляю тебя в сети",
     sampleTuhmatText: "Этот человек распространяет клевету и слухи",
     samplePoraText: "Дам взятку для решения вопроса",
+    sampleTahdidText: "Я тебя убью",
+    sampleBuzishText: "Я взломаю твой аккаунт и украду твой пароль",
     safeStatusText: "Текст чист: Запрещенные или противоправные слова не обнаружены.",
     legalPenaltyLabel: "⚖️ Что грозит (Законное наказание):",
     legalArticleLabel: "📜 Какая статья и документ:",
@@ -182,6 +229,22 @@ export const translations = {
     featureMultiLang: "Три языка: узбекский, русский, английский",
     typeMessagePlaceholder: "Введите сообщение...",
     onlineStatus: "в сети",
+
+    // Keyboard Theme Selection
+    themePromptTitle: "Хотите выбрать дизайн для клавиатуры?",
+    themePromptSub: "Выберите один из 4 эксклюзивных премиум-дизайнов",
+    themeOpenButton: "✨ Выбрать дизайн (1:1 Премиум)",
+    themeModalHeaderSub: "Правильное слово — под защитой закона",
+    themeModalHeaderRight: "Законно, безопасно, надежно",
+    themeModalTitle: "Выберите дизайн клавиатуры",
+    themeModalSubtitle: "Выберите понравившуюся 1:1 эксклюзивную тему",
+    themeSelectedBadge: "Выбрано",
+    themeMockInputPlaceholder: "Введите законный текст...",
+    themeCloseBtn: "Применить и выйти",
+    themeDarkTitle: "1. Современный (Темный)",
+    themeLightTitle: "2. Минимальный (Светлый)",
+    themeGradientTitle: "3. Градиент (Премиум)",
+    themeLawTitle: "4. Премиум (Юридический стиль)",
 
     // Legislation Screen
     legislationTitle: "База законодательства",
@@ -205,11 +268,30 @@ export const translations = {
     helpGuideTitle: "Помощь и руководство",
     privacyPolicyTitle: "Политика конфиденциальности",
     aboutAppTitle: "О приложении",
+    helpGuideMessage: "1. Настройки Android -> Язык и ввод\n2. Выберите виртуальные клавиатуры\n3. Включите 'Huquqiy Keyboard'.",
+    aboutAppMessage: "Huquqiy Keyboard v1.0.0\nРаботает на основе официальной базы LexUZ.",
 
     // Privacy Screen
     privacyTitle: "Политика конфиденциальности",
     privacyDescHeader: "Безопасность пользовательских данных",
-    privacyDescBody: "Приложение Huquqiy Keyboard никогда не передает ваши личные данные, переписку и пароли третьим лицам. Все проверки выполняются локально на вашем устройстве в оффлайн-режиме."
+    privacyDescBody: "Приложение Huquqiy Keyboard никогда не передает ваши личные данные, переписку и пароли третьим лицам. Все проверки выполняются локально на вашем устройстве в оффлайн-режиме.",
+    privacyPrinciplesTitle: "Принципы конфиденциальности",
+    principle1Title: "100% Оффлайн работа",
+    principle1Desc: "Введенные буквы и слова не отправляются на сервер",
+    principle2Title: "Автоматическая защита",
+    principle2Desc: "При вводе паролей и банковских карт анализ автоматически отключается",
+    principle3Title: "Официальная база LexUZ",
+    principle3Desc: "Предупреждения формируются исключительно на основе законов Республики Узбекистан из базы LexUZ",
+
+    // Article Details Screen
+    articleDetailsTitle: "Информация о статье",
+    articleNameLabel: "Название статьи",
+    articleTextLabel: "Текст",
+    docNumberLabel: "Номер документа:",
+    adoptionDateLabel: "Дата принятия:",
+    effectiveDateLabel: "Дата вступления в силу:",
+    sourceLabel: "Источник:",
+    openInLexUz: "Открыть на LexUZ"
   },
   en: {
     // Language Selection Screen
@@ -256,6 +338,8 @@ export const translations = {
     loginSuccessMsg: "Logged in successfully!",
     registerSuccessMsg: "Registered successfully!",
     skipAuth: "Continue without signing in",
+    registerErrorTitle: "Registration Error",
+    errorAlertTitle: "Error",
 
     // Home Screen
     systemKeyboardTitle: "Connect Huquq Check to Keyboard",
@@ -273,9 +357,13 @@ export const translations = {
     quickTestBtnHaqorat: "Insult text",
     quickTestBtnTuhmat: "Defamation text",
     quickTestBtnPora: "Bribe text",
+    quickTestBtnTahdid: "Threat text",
+    quickTestBtnBuzish: "Account hack",
     sampleHaqoratText: "I insult you on the network",
     sampleTuhmatText: "That person spreads false rumors and defamation",
     samplePoraText: "I will pay a bribe to solve this matter",
+    sampleTahdidText: "I will kill you",
+    sampleBuzishText: "I will hack your account and steal your password",
     safeStatusText: "Clean text: No illegal or prohibited words detected.",
     legalPenaltyLabel: "⚖️ Legal Consequence (Penalty):",
     legalArticleLabel: "📜 Applicable Article & Document:",
@@ -288,6 +376,22 @@ export const translations = {
     featureMultiLang: "Three languages: Uzbek, Russian, English",
     typeMessagePlaceholder: "Type a message...",
     onlineStatus: "online",
+
+    // Keyboard Theme Selection
+    themePromptTitle: "Would you like to choose a keyboard theme?",
+    themePromptSub: "Choose one of 4 exclusive premium designs",
+    themeOpenButton: "✨ Select Design (1:1 Premium)",
+    themeModalHeaderSub: "Right words — protected by law",
+    themeModalHeaderRight: "Legal, secure, reliable",
+    themeModalTitle: "Select Keyboard Theme",
+    themeModalSubtitle: "Choose your favorite 1:1 exclusive theme",
+    themeSelectedBadge: "Selected",
+    themeMockInputPlaceholder: "Type legal text...",
+    themeCloseBtn: "Apply & Exit",
+    themeDarkTitle: "1. Modern (Dark)",
+    themeLightTitle: "2. Minimal (Light)",
+    themeGradientTitle: "3. Gradient (Premium)",
+    themeLawTitle: "4. Premium (Law Style)",
 
     // Legislation Screen
     legislationTitle: "Legislation Database",
@@ -311,10 +415,30 @@ export const translations = {
     helpGuideTitle: "Help & Guide",
     privacyPolicyTitle: "Privacy Policy",
     aboutAppTitle: "About App",
+    helpGuideMessage: "1. Android Settings -> Language & Input\n2. Select Virtual Keyboard menu\n3. Turn on 'Huquqiy Keyboard'.",
+    aboutAppMessage: "Huquqiy Keyboard v1.0.0\nPowered by official LexUZ database.",
 
     // Privacy Screen
     privacyTitle: "Privacy Policy",
     privacyDescHeader: "User Data Protection",
-    privacyDescBody: "Huquqiy Keyboard app never transfers your personal data, messages, or passwords to third parties. All text analysis is performed locally on your device in offline mode."
+    privacyDescBody: "Huquqiy Keyboard app never transfers your personal data, messages, or passwords to third parties. All text analysis is performed locally on your device in offline mode.",
+    privacyPrinciplesTitle: "Privacy Principles",
+    principle1Title: "100% Offline Work",
+    principle1Desc: "Typed characters and words are never sent to a server",
+    principle2Title: "Automatic Protection",
+    principle2Desc: "Analysis automatically stops when sensitive passwords or cards are entered",
+    principle3Title: "Official LexUZ Database",
+    principle3Desc: "Warnings are generated solely based on Republic of Uzbekistan articles from official LexUZ database",
+
+    // Article Details Screen
+    articleDetailsTitle: "Article Details",
+    articleNameLabel: "Article Title",
+    articleTextLabel: "Text",
+    docNumberLabel: "Document number:",
+    adoptionDateLabel: "Adoption date:",
+    effectiveDateLabel: "Effective date:",
+    sourceLabel: "Source:",
+    openInLexUz: "Open on LexUZ"
   }
 };
+

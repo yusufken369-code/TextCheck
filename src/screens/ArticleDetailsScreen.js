@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking, StyleSheet, Platform, StatusBar } from 'react-native';
 import { LEGAL_ARTICLES } from '../database/legalDatabase';
 import { DocumentIcon, ExternalLinkIcon, BackArrowIcon } from '../components/Icons';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ArticleDetailsScreen({ articleId = 'mjt-183', onGoBack }) {
+  const { t } = useLanguage();
   const article = LEGAL_ARTICLES.find(a => a.id === articleId) || LEGAL_ARTICLES[0];
 
   const handleOpenLexUz = () => {
@@ -22,12 +24,12 @@ export default function ArticleDetailsScreen({ articleId = 'mjt-183', onGoBack }
         <TouchableOpacity
           onPress={onGoBack}
           style={styles.backBtn}
-          activeOpacity={0.7} x
+          activeOpacity={0.7}
           hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}
         >
           <BackArrowIcon size={20} color="#FFFFFF" />
         </TouchableOpacity>
-        <Text style={styles.screenTitle}>Maqola ma’lumoti</Text>
+        <Text style={styles.screenTitle}>{t('articleDetailsTitle')}</Text>
       </View>
 
       {/* Main Content Card Frame */}
@@ -44,13 +46,13 @@ export default function ArticleDetailsScreen({ articleId = 'mjt-183', onGoBack }
 
           {/* Article Name Section */}
           <View style={styles.sectionCard}>
-            <Text style={styles.sectionLabel}>Modda nomi</Text>
+            <Text style={styles.sectionLabel}>{t('articleNameLabel')}</Text>
             <Text style={styles.articleTitleText}>{article.title}</Text>
           </View>
 
           {/* Article Text Section */}
           <View style={styles.sectionCard}>
-            <Text style={styles.sectionLabel}>Matn</Text>
+            <Text style={styles.sectionLabel}>{t('articleTextLabel')}</Text>
             <Text style={styles.articleBodyText}>
               {article.content}
             </Text>
@@ -59,29 +61,29 @@ export default function ArticleDetailsScreen({ articleId = 'mjt-183', onGoBack }
           {/* Metadata Grid */}
           <View style={styles.sectionCard}>
             <View style={styles.metaRow}>
-              <Text style={styles.metaKey}>Hujjat raqami:</Text>
+              <Text style={styles.metaKey}>{t('docNumberLabel')}</Text>
               <Text style={styles.metaVal}>{article.docNumber}</Text>
             </View>
 
             <View style={styles.metaRow}>
-              <Text style={styles.metaKey}>Qabul qilingan sana:</Text>
+              <Text style={styles.metaKey}>{t('adoptionDateLabel')}</Text>
               <Text style={styles.metaVal}>{article.adoptionDate}</Text>
             </View>
 
             <View style={styles.metaRow}>
-              <Text style={styles.metaKey}>Kuchga kirgan sana:</Text>
+              <Text style={styles.metaKey}>{t('effectiveDateLabel')}</Text>
               <Text style={styles.metaVal}>{article.effectiveDate}</Text>
             </View>
 
             <View style={[styles.metaRow, { borderBottomWidth: 0 }]}>
-              <Text style={styles.metaKey}>Manba:</Text>
+              <Text style={styles.metaKey}>{t('sourceLabel')}</Text>
               <Text style={styles.metaVal}>{article.source}</Text>
             </View>
           </View>
 
           {/* Action Button */}
           <TouchableOpacity style={styles.lexBtn} onPress={handleOpenLexUz} activeOpacity={0.8}>
-            <Text style={styles.lexBtnText}>LexUZ da ochish</Text>
+            <Text style={styles.lexBtnText}>{t('openInLexUz')}</Text>
             <ExternalLinkIcon size={16} color="#FFFFFF" />
           </TouchableOpacity>
         </ScrollView>
