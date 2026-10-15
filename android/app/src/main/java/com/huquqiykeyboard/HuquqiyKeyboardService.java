@@ -1,6 +1,5 @@
 package com.huquqiykeyboard;
 
-import com.huquqiykeyboard.R;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
